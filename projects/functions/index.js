@@ -129,15 +129,29 @@ console.log(returnArgumentsArray(1, 2, 3));
    console.log(newSum()) выведет 6
  */
 
-function bindFunction(sum) {
-  // return function (a, b) {
-  //   return sum(a, b);
-  // }
+function bindFunction(funcSumm, ...arg) {
+  funcSumm = sum.bind(null, ...arg);
+  return funcSumm;
 }
 
-// var newSum = bindFunction(sum, 2, 4);
+function sum(a, b) {
+  return a + b;
+}
 
-// console.log(newSum())
+const newSum = bindFunction(sum, 2, 4, 2, 12);
+console.log(newSum());
+
+/* И это я немного по-другому оформил эту задачу :D / тоже рабочий  \
+
+function sum(a, b) {
+  return a + b;
+}
+
+let bind = sum.bind(null);
+
+console.log(bind(2,4));
+
+*/
 
 export {
   returnFirstArgument,
