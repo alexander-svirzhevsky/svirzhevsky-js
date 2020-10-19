@@ -17,9 +17,6 @@ function returnFirstArgument(a) {
   return a;
 }
 
-console.log(returnFirstArgument(10));
-console.log(returnFirstArgument('привет'));
-
 /*
  Задание 2:
 
@@ -39,11 +36,6 @@ function sumWithDefaults(a, b = 100) {
   return a + b;
 }
 
-console.log(sumWithDefaults(10, 20));
-console.log(sumWithDefaults(2, 4));
-
-console.log(sumWithDefaults(10));
-
 /*
  Задание 3:
 
@@ -55,16 +47,6 @@ console.log(sumWithDefaults(10));
 function returnFnResult(fn) {
   return fn();
 }
-
-// console.log(returnFnResult('privet'));
-
-console.log(returnFnResult(() => 'привет!!'));
-
-console.log(
-  returnFnResult(function () {
-    return 'привет';
-  })
-);
 
 /*
  Задание 4:
@@ -79,17 +61,10 @@ console.log(
    console.log(f()); // выведет 12
    console.log(f()); // выведет 13
  */
+
 function returnCounter(number = 0) {
-  return function () {
-    return ++number;
-  };
+  return () => ++number;
 }
-
-const f = returnCounter(10);
-
-console.log(f()); // выведет 11
-console.log(f()); // выведет 12
-console.log(f()); // выведет 13
 
 /*
  Задание 5 *:
@@ -100,18 +75,9 @@ console.log(f()); // выведет 13
  Пример:
    returnArgumentsArray(1, 2, 3) вернет [1, 2, 3]
  */
-function returnArgumentsArray() {
-  const array = [];
-
-  for (let i = 0; i < arguments.length; i++) {
-    const element = arguments[i];
-
-    array.push(element);
-  }
-  return array;
+function returnArgumentsArray(...rest) {
+  return rest;
 }
-
-console.log(returnArgumentsArray(1, 2, 3));
 
 /*
  Задание 6 *:
@@ -130,16 +96,8 @@ console.log(returnArgumentsArray(1, 2, 3));
  */
 
 function bindFunction(funcSumm, ...arg) {
-  funcSumm = sum.bind(null, ...arg);
-  return funcSumm;
+  return () => funcSumm.call(null, ...arg);
 }
-
-function sum(a, b) {
-  return a + b;
-}
-
-const newSum = bindFunction(sum, 2, 4, 2, 12);
-console.log(newSum());
 
 /* И это я немного по-другому оформил эту задачу :D / тоже рабочий  \
 
