@@ -60,18 +60,15 @@ function reduce(array, fn, initial) {}
    upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
  */
 function upperProps(obj) {
-  const value = Object.keys(obj);
-
-  value.map((value) => {
-    value.toUpperCase();
-    return value;
-  });
-
-  console.log(value);
+  const arr = [];
+  for (const key in obj) {
+    arr.push(key.toUpperCase());
+  }
+  return arr;
 }
 
-upperProps({ name: 'Сергей', lastName: 'Петров' });
-// console.log(upperProps({ name: 'Сергей', lastName: 'Петров' }));
+// upperProps({ name: 'Сергей', lastName: 'Петров' });
+console.log(upperProps({ name: 'Сергей', lastName: 'Петров' }));
 /*
  Задание 5 *:
 
