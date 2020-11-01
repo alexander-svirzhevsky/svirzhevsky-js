@@ -9,11 +9,8 @@
    delayPromise(3) // вернет promise, который будет разрешен через 3 секунды
  */
 function delayPromise(seconds) {
-  seconds = 2000;
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve();
-    }, seconds);
+    setTimeout(resolve, seconds * 1000);
   });
 }
 

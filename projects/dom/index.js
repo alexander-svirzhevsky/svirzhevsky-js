@@ -14,7 +14,7 @@ function createDivWithText(text) {
   const element = document.createElement('div');
   element.textContent = text;
 
-  return document.body.appendChild(element);
+  return element;
 }
 
 /*
@@ -101,12 +101,10 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
-  const elem = where.childNodes;
-
-  for (let i = 0; i < elem.length; i++) {
-    if (elem[i].nodeType === 3) {
-      elem[i].parentNode.removeChild(elem[i]);
-      i--;
+  for (let i = 0; i < where.childNodes.length; i++) {
+    const elem = where.childNodes[i];
+    if (elem.nodeType === 3) {
+      elem.parentNode.removeChild(elem);
     }
   }
 }
