@@ -72,7 +72,7 @@ const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
 
-const towns = [];
+let towns = [];
 
 retryButton.addEventListener('click', () => {
   tryToLoad();
@@ -86,10 +86,10 @@ loadingFailedBlock.classList.add('hidden');
 filterBlock.classList.add('hidden');
 
 function tryToLoad() {
-  loadTowns();
+  towns = loadTowns();
 }
 
-tryToLoad()
+loadTowns()
   .then(() => loadingBlock.classList.add('hidden'))
   .then(() => loadingFailedBlock.classList.add('hidden'))
   .then(() => filterBlock.classList.remove('hidden'))
