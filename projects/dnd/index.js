@@ -25,7 +25,7 @@ export function createDiv() {}
 
 const addDivButton = homeworkContainer.querySelector('#addDiv');
 
-const divItem = document.querySelector('.new_div');
+// const divItem = document.querySelector('.draggable-div');
 
 addDivButton.addEventListener('click', function () {
   createItem();
@@ -55,12 +55,38 @@ function createItem() {
   newDiv.style.left = posx + 'px';
 
   newDiv.textContent = 123;
-  newDiv.classList.add('new_div');
+  newDiv.classList.add('draggable-div');
   newDiv.draggable = true;
 
   document.body.append(newDiv);
 }
 
-divItem.addEventListener('click', () => {
-  console.log('click!!');
+document.body.addEventListener('click', (e) => {
+  if (e.target.classList === 'draggable-div') {
+    const item = e.target;
+    item.onmousedown = () => {
+      // нажатие мыши
+
+      //передвинуть под координаты курсора
+      function moveAt(e) {
+        item.style.left = e.pageX - item.offsetWidth / 2 + 'px';
+        item.style.top = e.pageY - item.offsetHeight / 2 + 'px';
+      }
+
+      // перемещать по экрану
+      document.onmousemove = function (e) {
+        moveAt(e);
+      };
+
+      // опускание мыши
+      item.onmouseup = function () {
+        document.onmousemove = null;
+        item.onmouseup = null;
+      };
+
+      item.ondragstart = function () {
+        return false;
+      };
+    };
+  }
 });
