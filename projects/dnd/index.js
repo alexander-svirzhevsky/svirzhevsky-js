@@ -25,4 +25,42 @@ export function createDiv() {}
 
 const addDivButton = homeworkContainer.querySelector('#addDiv');
 
-addDivButton.addEventListener('click', function () {});
+const divItem = document.querySelector('.new_div');
+
+addDivButton.addEventListener('click', function () {
+  createItem();
+});
+
+function createItem() {
+  const newDiv = document.createElement('div');
+
+  const divsize = (Math.random() * 100 + 50).toFixed();
+  const color =
+    '#' + (Math.random().toString(16) + '000000').substring(2, 8).toUpperCase();
+
+  const posx = (
+    Math.random() *
+    (document.documentElement.clientWidth - divsize)
+  ).toFixed();
+  const posy = (
+    Math.random() *
+    (document.documentElement.clientHeight - divsize)
+  ).toFixed();
+
+  newDiv.style.width = divsize + 'px';
+  newDiv.style.height = divsize + 'px';
+  newDiv.style.backgroundColor = color;
+  newDiv.style.position = 'absolute';
+  newDiv.style.top = posy + 'px';
+  newDiv.style.left = posx + 'px';
+
+  newDiv.textContent = 123;
+  newDiv.classList.add('new_div');
+  newDiv.draggable = true;
+
+  document.body.append(newDiv);
+}
+
+divItem.addEventListener('click', () => {
+  console.log('click!!');
+});
