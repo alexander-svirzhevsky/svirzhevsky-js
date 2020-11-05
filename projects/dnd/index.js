@@ -62,8 +62,9 @@ function createItem() {
 }
 
 document.body.addEventListener('click', (e) => {
-  if (e.target.classList === 'draggable-div') {
-    const item = e.target;
+  const item = e.target;
+  if (item.classList.contains('draggable-div')) {
+    // const item = e.target;
 
     const dragStart = function () {
       setTimeout(() => {
