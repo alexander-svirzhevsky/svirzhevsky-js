@@ -19,13 +19,13 @@ import './dnd.html';
 
 const homeworkContainer = document.querySelector('#app');
 
-document.addEventListener('mousemove', (e) => {});
+document.addEventListener('mousemove', (e) => {
+  // console.log(`mouse position: ${event.x}:${event.y}`)
+});
 
 export function createDiv() {}
 
 const addDivButton = homeworkContainer.querySelector('#addDiv');
-
-// const divItem = document.querySelector('.draggable-div');
 
 addDivButton.addEventListener('click', function () {
   createItem();
@@ -58,35 +58,74 @@ function createItem() {
   newDiv.classList.add('draggable-div');
   newDiv.draggable = true;
 
-  document.body.append(newDiv);
+  homeworkContainer.appendChild(newDiv);
 }
 
 document.body.addEventListener('click', (e) => {
   if (e.target.classList === 'draggable-div') {
     const item = e.target;
-    item.onmousedown = () => {
-      // нажатие мыши
 
-      //передвинуть под координаты курсора
-      function moveAt(e) {
-        item.style.left = e.pageX - item.offsetWidth / 2 + 'px';
-        item.style.top = e.pageY - item.offsetHeight / 2 + 'px';
-      }
-
-      // перемещать по экрану
-      document.onmousemove = function (e) {
-        moveAt(e);
-      };
-
-      // опускание мыши
-      item.onmouseup = function () {
-        document.onmousemove = null;
-        item.onmouseup = null;
-      };
-
-      item.ondragstart = function () {
-        return false;
-      };
+    const dragStart = function () {
+      setTimeout(() => {
+        this.classList.add('hide');
+      }, 0);
     };
+
+    const dragEnd = function () {
+      this.classList.remove('hide');
+    };
+
+    item.addEventListener('dragstart', dragStart);
+    item.addEventListener('dragend', dragEnd);
+
+    ///////////////////////
+
+    const dragOver = function (e) {
+      e.preventDefault();
+    };
+
+    const dragDrop = function () {
+      // homeworkContainer.appendChild(item);
+      // console.log('drop');
+
+      document.addEventListener('mousemove', (event) => {
+        // console.log(`mouse position: ${event.x}:${event.y}`)
+        item.style.top = event.y + 'px';
+        item.style.left = event.x + 'px';
+      });
+    };
+
+    homeworkContainer.addEventListener('dragover', dragOver);
+    homeworkContainer.addEventListener('drop', dragDrop);
   }
 });
+
+// document.body.addEventListener('click', (e) => {
+//   if (e.target.classList === 'draggable-div') {
+//     const item = e.target;
+//     item.onmousedown = () => {
+//       // нажатие мыши
+
+//       //передвинуть под координаты курсора
+//       function moveAt(e) {
+//         item.style.left = e.pageX - item.offsetWidth / 2 + 'px';
+//         item.style.top = e.pageY - item.offsetHeight / 2 + 'px';
+//       }
+
+//       // перемещать по экрану
+//       document.onmousemove = function (e) {
+//         moveAt(e);
+//       };
+
+//       // опускание мыши
+//       item.onmouseup = function () {
+//         document.onmousemove = null;
+//         item.onmouseup = null;
+//       };
+
+//       item.ondragstart = function () {
+//         return false;
+//       };
+//     };
+//   }
+// });
