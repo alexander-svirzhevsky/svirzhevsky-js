@@ -47,10 +47,14 @@ const listTable = homeworkContainer.querySelector('#list-table tbody');
 
 const cookiesMap = getCookies();
 let filterValue = '';
-
+console.log(cookiesMap);
 updateTable();
 
 function getCookies() {
+  if (!document.cookie) {
+    return new Map();
+  }
+
   return document.cookie.split('; ').reduce((prev, current) => {
     const [name, value] = current.split('=');
     prev[name] = value;
@@ -79,7 +83,6 @@ addButton.addEventListener('click', () => {
 
 listTable.addEventListener('click', (e) => {
   const { role, cookieName } = e.target.dataset;
-  console.log(e.target.dataset);
 
   if (role === 'remove-cookie') {
     cookiesMap.delete(cookieName);
@@ -106,19 +109,11 @@ function updateTable() {
     total++;
 
     const tr = document.createElement('tr');
-    const nameTD = document.createElement('td');
-    const valueTD = document.createElement('td');
-    const removeTD = document.createElement('td');
-    const removeButton = document.createElement('button');
-
-    removeButton.dataset.role = 'remove-cookie';
-    removeButton.dataset.cookieName = name;
-    removeButton.textContent = 'Удалить';
-    nameTD.textContent = name;
-    valueTD.textContent = value;
-    valueTD.classList.add('value');
-    tr.append(nameTD, valueTD, removeTD);
-    removeTD.append(removeButton);
+    tr.innerHTML = `
+    <td>${name}</td>
+    <td class="value">${value}</td>
+    <td><button data-role="remove-cookie" data-cookie-name=${name}>Удалить</button></td>
+    `;
 
     fragment.append(tr);
   }
