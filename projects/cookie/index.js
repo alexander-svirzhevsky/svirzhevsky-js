@@ -45,27 +45,21 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-const cookiesMap = getCookies();
 let filterValue = '';
-console.log(cookiesMap);
-updateTable();
+
+const cookie = getCookies();
 
 function getCookies() {
   if (!document.cookie) {
-    return new Map();
+    return {};
   }
 
   return document.cookie.split('; ').reduce((prev, current) => {
     const [name, value] = current.split('=');
     prev[name] = value;
     return prev;
-  }, new Map());
+  }, {});
 }
-
-filterNameInput.addEventListener('input', function () {
-  filterValue = this.value;
-  updateTable();
-});
 
 addButton.addEventListener('click', () => {
   const name = addNameInput.value;
@@ -76,19 +70,53 @@ addButton.addEventListener('click', () => {
   }
 
   document.cookie = `${name}=${value}`;
-  cookiesMap.set(name, value);
-
-  updateTable();
+  addCookie({
+    [addNameInput.value]: addValueInput.value,
+  });
 });
+
+function addCookie(cookie) {
+  // listTable.innerHTML = '';
+  for (const key in cookie) {
+    // cookie[key] - значение
+    // key - свойство
+    if (
+      filterValue &&
+      !key.toLowerCase().includes(cookie.key.toLowerCase()) &&
+      !cookie[key].toLowerCase().includes(cookie.cookie[key].toLowerCase())
+    ) {
+      continue;
+    }
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+    <td>${key}</td>
+    <td class="value">${cookie[key]}</td>
+    <td><button data-role="remove-cookie" data-cookie-name=${key}>Удалить</button></td>
+    `;
+    listTable.append(tr);
+  }
+}
+
+function uploadTable() {
+  addCookie(cookie);
+}
+
+uploadTable();
 
 listTable.addEventListener('click', (e) => {
   const { role, cookieName } = e.target.dataset;
+  const tr = e.target.closest('tr');
 
   if (role === 'remove-cookie') {
-    cookiesMap.delete(cookieName);
+    delete cookie.cookieName;
     document.cookie = `${cookieName}=deleted; max-age=0`;
-    updateTable();
+    tr.remove();
   }
+});
+
+filterNameInput.addEventListener('input', function () {
+  filterValue = this.value;
+  updateTable();
 });
 
 function updateTable() {
@@ -97,22 +125,23 @@ function updateTable() {
 
   listTable.innerHTML = '';
 
-  for (const [name, value] of cookiesMap) {
+  for (const key in cookie) {
     if (
       filterValue &&
-      !name.toLowerCase().includes(filterValue.toLowerCase()) &&
-      !value.toLowerCase().includes(filterValue.toLowerCase())
+      !key.toLowerCase().includes(filterValue.toLowerCase()) &&
+      !cookie[key].toLowerCase().includes(filterValue.toLowerCase())
     ) {
       continue;
     }
 
     total++;
+    console.log(key);
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
-    <td>${name}</td>
-    <td class="value">${value}</td>
-    <td><button data-role="remove-cookie" data-cookie-name=${name}>Удалить</button></td>
+    <td>${key}</td>
+    <td class="value">${cookie[key]}</td>
+    <td><button data-role="remove-cookie" data-cookie-name=${key}>Удалить</button></td>
     `;
 
     fragment.append(tr);
