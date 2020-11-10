@@ -86,7 +86,7 @@ listTable.addEventListener('click', (e) => {
 filterNameInput.addEventListener('input', function () {
   filterValue = this.value;
   listTable.innerHTML = '';
-  createTable(cookie);
+  createTable(getCookies());
 });
 
 function getCookies() {
