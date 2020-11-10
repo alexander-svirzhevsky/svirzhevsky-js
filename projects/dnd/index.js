@@ -19,17 +19,8 @@ import './dnd.html';
 
 const homeworkContainer = document.querySelector('#app');
 
-let currentDrag;
 let startX = 0;
 let startY = 0;
-
-document.addEventListener('mousemove', (e) => {
-  if (currentDrag) {
-    currentDrag.style.top = e.clientY - startY + 'px';
-    currentDrag.style.left = e.clientX - startX + 'px';
-    currentDrag.style.zIndex = 1;
-  }
-});
 
 export function createDiv() {
   const newDiv = document.createElement('div');
@@ -55,18 +46,36 @@ export function createDiv() {
 
   newDiv.classList.add('draggable-div');
 
-  newDiv.addEventListener('mousedown', (e) => {
-    currentDrag = newDiv;
-    startX = e.offsetX;
-    startY = e.offsetY;
-  });
-  newDiv.addEventListener('mouseup', () => {
-    currentDrag.style.zIndex = 0;
-    currentDrag = false;
-  });
-
   return newDiv;
 }
+
+document.addEventListener('mousedown', (e) => {
+  const currentDrag = e.target;
+
+  function mouseMove(e) {
+    if (currentDrag) {
+      currentDrag.style.top = e.clientY - startY + 'px';
+      currentDrag.style.left = e.clientX - startX + 'px';
+      currentDrag.style.zIndex = 1;
+    }
+  }
+
+  if (currentDrag.classList.contains('draggable-div')) {
+    startX = e.offsetX;
+    startY = e.offsetY;
+
+    document.addEventListener('mousemove', mouseMove);
+
+    document.addEventListener(
+      'mouseup',
+      () => {
+        document.removeEventListener('mousemove', mouseMove);
+        currentDrag.style.zIndex = 'initial';
+      },
+      { once: true }
+    );
+  }
+});
 
 const addDivButton = homeworkContainer.querySelector('#addDiv');
 
@@ -74,46 +83,3 @@ addDivButton.addEventListener('click', function () {
   const div = createDiv();
   homeworkContainer.appendChild(div);
 });
-
-// function createItem() {
-
-// }
-
-// document.body.addEventListener('click', (e) => {
-//   const item = e.target;
-//   if (item.classList.contains('draggable-div')) {
-
-//     const dragStart = function () {
-//       setTimeout(() => {
-//         this.classList.add('hide');
-//       }, 0);
-//     };
-
-//     const dragEnd = function () {
-//       this.classList.remove('hide');
-//     };
-
-//     item.addEventListener('dragstart', dragStart);
-//     item.addEventListener('dragend', dragEnd);
-
-//     ///////////////////////
-
-//     const dragOver = function (e) {
-//       e.preventDefault();
-//     };
-
-//     const dragDrop = function () {
-//       // homeworkContainer.appendChild(item);
-//       // console.log('drop');
-
-//       document.addEventListener('mousemove', (event) => {
-//         // console.log(`mouse position: ${event.x}:${event.y}`)
-//         item.style.top = event.y + 'px';
-//         item.style.left = event.x + 'px';
-//       });
-//     };
-
-//     homeworkContainer.addEventListener('dragover', dragOver);
-//     homeworkContainer.addEventListener('drop', dragDrop);
-//   }
-// });
