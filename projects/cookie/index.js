@@ -116,18 +116,11 @@ function createTable(cookie) {
     const tr = document.createElement('tr');
 
     tr.innerHTML = `
-    <td>${key}</td>
-    <td class="value">${cookie[key]}</td>
-    <td><button data-role="remove-cookie" data-cookie-name="${key}">Удалить</button></td>
-    `;
+  <td>${key}</td>
+  <td class="value">${cookie[key]}</td>
+  <td><button data-role="remove-cookie" data-cookie-name="${key}">Удалить</button></td>
+  `;
     tr.id = key.replace(' ', '_');
-
-    // if (addNameInput.value === tr.id) {
-
-    // } else {
-
-    // }
-
     listTable.append(tr);
   }
 }
